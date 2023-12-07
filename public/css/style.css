@@ -1,0 +1,363 @@
+body, h1, h2, h3, h4, h5, h6, p, ul, ol {
+  margin: 0;
+  padding: 0;
+}
+
+.header_bar{
+  display:flex;
+  align-items: center; 
+  justify-content: space-between; 
+  border-top: 0.2em solid rgb(8, 8, 8);
+  border-bottom: 0.2em solid rgb(8, 8, 8);
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#login_box {
+  background-color: #bebaba;
+  color: rgb(8, 8, 8);
+  font-family: 'Times New Roman', serif;
+  margin: 0.7em;
+  padding: 0.7em;
+  display: flex;
+  border: 0.2em solid rgb(8, 8, 8);
+}
+#input {
+  display: inline-block;
+  vertical-align: top;
+}
+#options {
+  display: inline-block;
+  margin-left: 1em;
+}
+.container {
+
+}
+
+.top-section{
+  margin-bottom: 5%;
+}
+
+.top-left{
+  display: inline-block;
+  width: 40%;
+}
+
+.top-middle{
+  display: inline-block;
+  width: 20%;
+}
+
+.top-right{
+  display: inline-block;
+  width: 40%;
+}
+
+.bottom-section{
+
+}
+
+.bottom-left{
+  display: inline-block;
+  width: 70%;
+}
+
+.bottom-right{
+  display: inline-block;
+  width: 30%;
+}
+
+
+/* General body styles */
+body {
+  background-color: #ddd;
+  color: rgb(8, 8, 8);
+  font-family: 'Times New Roman', serif;
+}
+
+/* Header styles */
+h1, h2, h3, #header {
+  color: rgb(8, 8, 8);
+  text-align: center;
+  flex-grow: 1;
+}
+
+
+.faction-columns {
+  display: flex;
+  justify-content: center; 
+  flex-wrap: wrap;
+}
+.faction {
+  width: 30%; /* Adjust the width as needed to control the number of columns */
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+/* Paragraph */
+p {
+  color: black;
+}
+
+/* Centered nav bar with flexbox */
+nav {
+  background-color: #333;
+  padding: 0.5em; /* Adjust padding as needed */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-start; /* Align the content to the left */
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  max-width: 16.5em; /* Adjust the max width as needed */
+  margin: 2em; /* Center the content horizontally */
+}
+
+/* Error messages */
+#error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Links */
+a {
+  color: #2a9df4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Button styling */
+button {
+  background-color: gold;
+  color: #111;
+  border-radius: 0.1em;
+  border: 0.1em thin #111;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 0.1em;
+  box-shadow: 0 0 0.3em rgba(0, 0, 0, 0.5);  
+}
+
+button:hover {
+  background-color: darkgoldenrod;
+}
+
+img.scaled-down {
+  max-width: 18em;  /* Or whatever size you prefer */
+  height: auto;  /* Maintains the aspect ratio */
+}
+
+.layout-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(212,208,209,255);
+  padding: 2em;
+  margin-right: 4em;
+  margin-left: 4em;
+  margin-bottom: 2em;
+  border-radius: 1em;
+  border: thick double darkgoldenrod;
+  box-shadow: 0 0 0.3em rgba(0, 0, 0, 0.5);  
+}
+.duel-container {
+  display: flex;
+  justify-content: space-between;
+
+  background-color: rgba(212,208,209,255);
+  padding: 2em;
+  margin-right: 4em;
+  margin-left: 4em;
+  margin-bottom: 2em;
+  border-radius: 1em;
+  border: thick double darkgoldenrod;
+  box-shadow: 0 0 0.3em rgba(0, 0, 0, 0.5);  
+}
+
+
+.stat-box-container {
+  display: flex;
+  justify-content: center;
+}
+.stat {
+  flex-direction: column;
+  text-align: center; 
+  color: white;
+  margin: 0.5em;
+}
+.stat-box {
+  background-color: #35393a;
+  border: 0.15em solid #000;
+  height: 2.5em;
+  width: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0.3em rgba(0, 0, 0, 0.5);  
+}
+
+.faction-header {
+  text-align: center;
+  color: black;
+  font-size: 22px;
+  text-decoration: underline;
+}
+.name-header {
+  text-align: center;
+  color: black;
+  font-size: 34px;
+  text-decoration: underline;
+}
+
+.image-box {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+.image-box img {
+  margin: 1em;
+  border: thick double #35393a;
+  background-color: #111;
+  border-radius: 1em;
+  box-shadow: 0 0 0.3em rgba(0, 0, 0, 0.5);  
+}
+
+.weapons-container {
+  display: flex;
+  background-color: #333;
+  border: 0.15em solid #000;
+  box-shadow: 0 0 0.3em rgba(0, 0, 0, 0.5);  
+}
+.weapon-stat {
+  flex-direction: column;
+  padding-left: 0.5em;
+  line-height: 1.6em;
+  display: flex;
+}
+
+.colour-back{
+  padding-left: 0.5em;
+  margin-left: -0.5em;
+}
+
+.effects {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em; /* Adjust the gap between the buttons */
+  margin: 0.1em;
+}
+
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  width:5em;
+  position: relative;
+  display: inline;
+  margin: 1em;
+}
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  border: thick double darkgoldenrod;
+  display: none;
+  flex-wrap: wrap;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 20em;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 0.3em;
+  font-size: 18px;
+  min-width: 6.333em;
+  text-decoration: none;
+  display: block;
+}
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: flex;}
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.column1, .column2, .column3 {
+  flex: 1;
+  width: 33.33%;
+  border: 1px solid #ccc;
+  box-sizing: border-box; 
+}
+
+
+/* Style for the search input */
+.searchInput {
+  padding: 1em;
+  width: 28em;
+  display: inline-block; /* Use inline-block to allow other elements to be on the same line */
+  position: relative;
+}
+/* Style for the search results container */
+#searchResultsContainer1, #searchResultsContainer2{
+  position: relative;
+  width: 22em;
+}
+/* Style for the search results */
+ul#searchResults1, ul#searchResults2 {
+  list-style: none;
+  position: absolute;
+  z-index: 1; /* Ensure the search results appear above other elements */
+}
+/* Style for each search result item */
+ul#searchResults1 li,
+ul#searchResults2 li {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+
+/* Hide the search results container by default */
+#searchResultsContainer1 ul#searchResults1,
+#searchResultsContainer2 ul#searchResults2 {
+  color: black;
+  padding: 0.3em;
+  font-size: 18px;
+  background-color: #fff; /* Set a background color for the search results container */
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  border: thick double darkgoldenrod;
+}
+
+
+.center-align {
+  text-align: center;
+}
+.left-align {
+  text-align: left;
+}
+
+.model1, .model2, .modelFight {
+
+}
+
+.battle-results-table {
+  border-collapse: collapse;
+  background-color: #5a5a5a;
+  width: 100%;
+  margin-bottom: 1.5em;
+}
+.battle-results-table th, .battle-results-table td {
+  border: 1px solid #111;
+  padding: 8px;
+}
+.battle-results-table th {
+  background-color: #35393a;
+  text-align: left;
+}

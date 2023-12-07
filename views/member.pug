@@ -1,0 +1,39 @@
+doctype html
+head
+    meta(charset='UTF-8')
+    title Home Page
+    link(href='/css/style.css' rel='stylesheet')
+body
+    include ./partials/header
+    h2 #{data.member.name}
+    h3 Loyalty Points: #{data.loyalty.points}
+    .container
+        .top-section
+            .top-left
+                h3 Goals
+                for goal in data.goals
+                    b1 #{goal.description}
+                    br
+            .top-middle 
+                h3 Payments Due
+                for payment in data.payments
+                    b1 Due on: #{payment.date}
+                    br
+            .top-right
+                h3 Solitary Workouts
+                for exercise in data.exercises
+                    b1 Body group: #{exercise.body_group}                    
+                    br
+                    b1 #{exercise.description} | From #{exercise.description} to #{exercise.description} on #{exercise.date}
+                    br 
+        .bottom-section
+            .bottom-left
+                h3 Training Sessions
+                for session in data.sessions
+                    b1 Session with GET NAME from #{session.start_time} to #{session.end_time} on #{session.date}
+                    br
+            .bottom-right
+                h3 Complaints
+                for complaint in data.complaints
+                    b1 #{complaint.description}
+                    br

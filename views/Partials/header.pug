@@ -1,0 +1,26 @@
+div#header
+    a(href="/") 
+        button Home
+
+.header_bar
+    h1 Slavchev Dojo
+    div#login_box
+        form(action="/submit", method="post")
+            #input 
+                label(for='username') Username:
+                input(type='text', id='username', name='username')
+                br
+                label(for='password') Password:
+                input(type='password', id='password', name='password')
+            #options
+                select(name="userChoice", id="userChoice")
+                    option(value="members") Member
+                    option(value="trainers") Trainer
+                    option(value="admins") Admin
+                br
+                select(name="loginChoice", id="loginChoice")
+                    option(value="login") Login
+                    option(value="register") Register
+                    option(value="logout") Logout
+                br
+            input(type="submit", value="Submit")
