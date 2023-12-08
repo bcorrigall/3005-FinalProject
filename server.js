@@ -8,7 +8,8 @@ const csv = require('fast-csv');
 const http = require('http'); 
 const bodyParser = require('body-parser');
 const db = require('./server/dbConnect.js'); // database connection
-const { verifyUser, registerUser, getAll, getAllWithID, getMembersInClass, getAllWithIDAsync, matchTrainers, insertWithID, deleteAllWithId, toggleAllWithID } = require('./server/queries.js');
+const { verifyUser, registerUser, getAll, getAllWithID, getMembersInClass, joinTablesOn, getAllWithIDAsync, matchTrainers, insertWithID, deleteAllWithId, toggleAllWithID, addLoyalty, updateMaintenance } = require('./server/queries.js');
+
 
 // ------------- Initialize Express app and Port --------------
 const app = express();
@@ -76,6 +77,28 @@ app.get("/", async (req, res) =>{
 });
 
 // members page route
+app.get("/equipment", requireRole('admins'), async (req, res) => {
+  const { equipment_id } = req.params;
+  try {
+    console.log(req.session.userRole);
+    getAll(db, 'Equipment', (err, result) => {
+      if (err) {
+        console.error('Error:', err);
+      } else {
+        console.log('Result:', result);
+        res.render('equipment', { session: req.session, result });
+      }
+    });
+
+  } catch (err) {  
+    if (err.code === 'ENOENT') {                  //<--- ENOENT is the error code for "File Not Found" returned by res.render                  
+      res.status(404).send("Template not found");
+    } else{
+      res.status(500).send("Internal Server Error");
+    }
+  }
+});
+// members page route
 app.get("/members", requireRole('admins'), async (req, res) => {
   const { member_id } = req.params;
   try {
@@ -97,8 +120,71 @@ app.get("/members", requireRole('admins'), async (req, res) => {
     }
   }
 });
+// trainers page route
+app.get("/trainers", requireRole('admins'), async (req, res) => {
+  const { trainer_id } = req.params;
+  try {
+    console.log(req.session.userRole);
+    getAll(db, 'Trainers', (err, result) => {
+      if (err) {
+        console.error('Error:', err);
+      } else {
+        console.log('Result:', result);
+        res.render('trainers', { session: req.session, result });
+      }
+    });
 
+  } catch (err) {  
+    if (err.code === 'ENOENT') {                  //<--- ENOENT is the error code for "File Not Found" returned by res.render                  
+      res.status(404).send("Template not found");
+    } else{
+      res.status(500).send("Internal Server Error");
+    }
+  }
+});
+// rooms page route
+app.get("/rooms", requireRole('admins'), async (req, res) => {
+  const { room_id } = req.params;
+  try {
+    console.log(req.session.userRole);
+    getAll(db, 'Rooms', (err, result) => {
+      if (err) {
+        console.error('Error:', err);
+      } else {
+        console.log('Result:', result);
+        res.render('rooms', { session: req.session, result });
+      }
+    });
 
+  } catch (err) {  
+    if (err.code === 'ENOENT') {                  //<--- ENOENT is the error code for "File Not Found" returned by res.render                  
+      res.status(404).send("Template not found");
+    } else{
+      res.status(500).send("Internal Server Error");
+    }
+  }
+});
+// classes page route
+app.get("/classes", async (req, res) => {
+  try {
+    console.log(req.session.userRole);
+    getAll(db, 'Classes', (err, result) => {
+      if (err) {
+        console.error('Error:', err);
+      } else {
+        console.log('Result:', result);
+        res.render('classes', { session: req.session, result });
+      }
+    });
+
+  } catch (err) {  
+    if (err.code === 'ENOENT') {                  //<--- ENOENT is the error code for "File Not Found" returned by res.render                  
+      res.status(404).send("Template not found");
+    } else{
+      res.status(500).send("Internal Server Error");
+    }
+  }
+});
 // members page route
 app.get("/members/:member_id", async (req, res) => {
   const { member_id } = req.params;
@@ -137,8 +223,121 @@ app.get("/members/:member_id", async (req, res) => {
     }
   }
 });
+// trainers page route
+app.get("/trainers/:trainer_id", async (req, res) => {
+  const { trainer_id } = req.params;
+  try {
+    if ( req.session.userRole === "admins" || String(req.session.userID) === trainer_id) {
+      let trainer = await getAllWithIDAsync(db, "Trainers", "t_id", trainer_id);
+      let sessions = await matchTrainers(db, "t_id", trainer_id);
+      let data = {
+        trainer: trainer,
+        sessions: sessions,
+      };
+      console.log(req.session.userRole + req.session.userID);
+      res.render("trainer", { session: req.session, data });
+    } else {
+      res.status(403).send("Forbidden");
+    }
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      res.status(404).send("Template not found");
+    } else {
+      res.status(500).send("Internal Server Error");
+    }
+  }
+});
+// equipment page route
+app.get("/equipment/:equipment_id", async (req, res) => {
+  const { equipment_id } = req.params;
+  try {
+    console.log('Got to here 0');
+    if ( req.session.userRole === "admins" ) {
+      console.log('Got to here 1');
+      let equipment = await getAllWithIDAsync(db, "Equipment", "e_id", equipment_id);
+      console.log('Got to here 2');
+      let data = {
+        equipment: equipment,
+      };
 
+      res.render("equipmentIndividual", { session: req.session, data });
+    } else {
+      res.status(403).send("Forbidden");
+    }
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      res.status(404).send("Template not found");
+    } else {
+      res.status(500).send("Internal Server Error");
+    }
+  }
+});
+app.get("/rooms/:room_id", async (req, res) => {
+  const { room_id } = req.params;
+  try {
+    console.log(req.session.userRole + req.session.userID);
+    if ( req.session.userRole === "admins" ) {
+      let room = await getAllWithIDAsync(db, "Rooms", "r_id", room_id);
+      let equipment = await getAllWithIDAsync(db, "Equipment", "r_id", room_id);
 
+      joinTablesOn(db, 'Bookings', 'Classes', 'b_id', room_id, 'r_id', (err, result) => {
+        if (err) {
+          console.error('Error:', err);
+        } else {
+          let data = {
+            room: room,
+            equipment: equipment,
+            bookings: result,
+          };
+          console.log(data.bookings)
+          res.render("room", { session: req.session, data });
+        }
+      });
+    } else {
+      res.status(403).send("Forbidden");
+    }
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      res.status(404).send("Template not found");
+    } else {
+      res.status(500).send("Internal Server Error");
+    }
+  }
+});
+app.get("/classes/:class_id", async (req, res) => {
+  const { class_id } = req.params;
+  try {
+    console.log(req.session.userRole + req.session.userID);
+    if ( req.session.userRole === "admins" || req.session.userRole === "members") {
+      let iClass = await getAllWithIDAsync(db, "Classes", "c_id", class_id);
+      let booking = await getAllWithIDAsync(db, "Bookings", "b_id", iClass[0].b_id);
+      let room = await getAllWithIDAsync(db, "Rooms", "r_id", booking[0].r_id);
+
+      getMembersInClass(db, class_id, (err, result) => {
+        if (err) {
+          console.error('Error:', err);
+        } else {
+          let data = {
+            iClass: iClass,
+            booking: booking,
+            room: room,
+            members: result,
+          };
+          console.log(data)
+          res.render("class", { session: req.session, data });
+        }
+      });
+    } else {
+      res.status(403).send("Forbidden");
+    }
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      res.status(404).send("Template not found");
+    } else {
+      res.status(500).send("Internal Server Error");
+    }
+  }
+});
 app.post('/submit', async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -165,7 +364,7 @@ app.post('/submit', async (req, res) => {
             res.redirect("/"+userType+"/"+req.session.userID);
           } else if ( userType === "trainers") { 
             req.session.userID = result[0].t_id;
-            res.redirect("/members");
+            res.redirect("/"+userType+"/"+req.session.userID);
           } else if ( userType === "admins") { 
             req.session.userID = result[0].a_id;
             res.redirect("/members");
@@ -228,6 +427,23 @@ app.post('/session', async (req, res) => {
     }
   });
 });
+app.post('/trainersSession', async (req, res) => {
+  const memberName = req.body.memberName;
+  const startTime = req.body.startTime;
+  const endTime = req.body.endTime;
+  const date = new Date(req.body.date);
+  const id = req.body.t_id;
+  let member = await getAllWithIDAsync(db, 'Members', 'name', `${memberName}`);
+  console.log(member);
+  insertWithID(db, 'Sessions', ['m_id', 't_id', 'date', 'start_time', 'end_time'], [member[0].m_id, id, date, startTime, endTime], (err, result) => {
+    if (err) {
+      console.error('Error:', err);
+    } else {
+      console.log('Result:', result);
+      res.redirect("/trainers/"+id);
+    }
+  });
+});
 app.post('/health', async (req, res) => {
   const weight = req.body.weight;
   const height = req.body.height;
@@ -239,6 +455,19 @@ app.post('/health', async (req, res) => {
     } else {
       console.log('Result:', result);
       res.redirect("/members/"+id);
+    }
+  });
+});
+app.post('/addEquipment', async (req, res) => {
+  const equipmentName = req.body.equipmentName;
+  const date = new Date(req.body.date);
+  const r_id = req.body.r_id;
+  insertWithID(db, 'Equipment', ['r_id', 'e_name', 'target_date'], [r_id, equipmentName, date], (err, result) => {
+    if (err) {
+      console.error('Error:', err);
+    } else {
+      console.log('Result:', result);
+      res.redirect("/rooms/"+r_id);
     }
   });
 });
@@ -267,9 +496,24 @@ app.post('/delete', async (req, res) => {
     }
   });
 });
-app.post('/pay', async (req, res) => {
-  const id = req.body.id;
-  toggleAllWithID(db, 'Payments', 'p_id', id, 'processed', (err, result) => {
+app.post('/deleteBooking', async (req, res) => {
+  const b_id = req.body.b_id;
+  const c_id = req.body.c_id;
+  deleteAllWithId(db, 'MemberClasses', 'c_id', c_id, (err, result) => {
+    if (err) {
+      console.error('Error:', err);
+    } else {
+      console.log('Result:', result);
+    }
+  });
+  deleteAllWithId(db, 'Classes', 'b_id', b_id, (err, result) => {
+    if (err) {
+      console.error('Error:', err);
+    } else {
+      console.log('Result:', result);
+    }
+  });
+  deleteAllWithId(db, 'Bookings', 'b_id', b_id, (err, result) => {
     if (err) {
       console.error('Error:', err);
     } else {
@@ -277,6 +521,26 @@ app.post('/pay', async (req, res) => {
       res.redirect(req.get('referer'));
     }
   });
+});
+app.post('/pay', async (req, res) => {
+  const id = req.body.id;
+  const m_id = req.body.m_id;
+  const cost = req.body.cost;
+  toggleAllWithID(db, 'Payments', 'p_id', id, 'processed', async (err, result) => {
+    if (err) {
+      console.error('Error:', err);
+    } else {
+      console.log('Result:', result);
+      await addLoyalty(db, cost, m_id);
+      res.redirect(req.get('referer'));
+    }
+  });
+});
+app.post('/maintenance', async (req, res) => {
+  const date = new Date(req.body.date);
+  const e_id = req.body.id;
+  await updateMaintenance(db, e_id, date);
+  res.redirect(req.get('referer'));
 });
 
 //==================================================================================================

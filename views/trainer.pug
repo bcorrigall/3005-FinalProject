@@ -1,0 +1,37 @@
+doctype html
+head
+    meta(charset='UTF-8')
+    title Home Page
+    link(href='/css/style.css' rel='stylesheet')
+body
+    include ./partials/header
+    h2 #{data.trainer[0].name}
+    .container
+        .top-section
+            .top-left
+            .top-middle 
+            .top-right
+        .bottom-section
+            .bottom-left
+                h3 Training Sessions
+                for session in data.sessions
+                    b1 Session with #{session.name} from #{session.start_time} to #{session.end_time} on #{session.date}
+                    form(action="/delete", method="post")
+                        input(type='hidden', name='table', value='Sessions')
+                        input(type='hidden', name='idType', value='s_id')
+                        input(type='hidden', name='id', value=session.s_id)
+                        button(type="submit") Delete Record    
+                    br
+                form(action="/trainersSession", method="post")
+                    label(for='memberName') Member name:
+                    input(type='text', id='memberName', name='memberName')
+                    label(for='startTime') Start time:
+                    input(type='text', id='startTime', name='startTime')
+                    label(for='endTime') End time:
+                    input(type='text', id='endTime', name='endTime')
+                    label(for="date") Select a date: 
+                    input(type="date", id="date", name="date")
+                    input(type='hidden', name='t_id', value=data.trainer[0].t_id)
+                    button(type="submit") Submit Session
+            .bottom-middle 
+            .bottom-right

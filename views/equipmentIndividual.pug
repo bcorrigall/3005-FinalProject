@@ -1,0 +1,20 @@
+doctype html
+head
+    meta(charset='UTF-8')
+    title Home Page
+    link(href='/css/style.css' rel='stylesheet')
+body
+    include ./partials/header
+    h2 #{data.equipment[0].e_name}
+    .container
+        .top-section
+            .top-left
+                b1 Last maintained on  #{data.equipment[0].last_fixed}
+                br
+                b1 Next maintenence on #{data.equipment[0].target_date}
+                form(action="/maintenance", method="post")
+                    label(for="date") When should it be next maintained: 
+                    input(type="date", id="date", name="date")
+                    input(type='hidden', name='id', value=data.equipment[0].e_id)
+                    button(type="submit") Mark as maintained    
+                br

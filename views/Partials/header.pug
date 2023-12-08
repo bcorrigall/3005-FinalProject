@@ -1,6 +1,22 @@
 div#header
     a(href="/") 
         button Home
+    if (session.userRole === 'members')
+            a(href="/members/"+session.userID) 
+                button My Page
+    if (session.userRole === 'members' || session.userRole === 'admins' || session.userRole === 'trainers')
+            a(href="/classes") 
+                button Classes
+    if (session.userRole === 'admins' || session.userRole === 'trainers' )
+            a(href="/members") 
+                button Members
+    if (session.userRole === 'admins' )
+            a(href="/trainers") 
+                button Trainers
+            a(href="/equipment") 
+                button Equipment
+            a(href="/rooms") 
+                button Rooms
 
 .header_bar
     h1 Slavchev Dojo

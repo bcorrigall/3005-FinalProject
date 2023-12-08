@@ -1,0 +1,27 @@
+doctype html
+head
+    meta(charset='UTF-8')
+    title Home Page
+    link(href='/css/style.css' rel='stylesheet')
+body
+    include ./partials/header
+    h2 #{data.iClass[0].name}
+    h3 In: #{data.room[0].name}
+    .container
+        .top-section
+            .top-left
+                h3 Timing 
+                br
+                b1 Class is taking place on #{data.booking[0].date} from #{data.booking[0].start_time} to #{data.booking[0].end_time}
+            .top-middle
+            .top-right
+                h3 Description 
+                br
+                b1 #{data.iClass[0].description}
+                br
+        .bottom-section
+            .bottom-left
+                h3 Members in Class
+                for member in data.members
+                    b1 #{member.name}
+                    br

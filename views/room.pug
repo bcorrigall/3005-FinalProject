@@ -1,0 +1,33 @@
+doctype html
+head
+    meta(charset='UTF-8')
+    title Home Page
+    link(href='/css/style.css' rel='stylesheet')
+body
+    include ./partials/header
+    h2 #{data.room[0].name}
+    h3 Size: #{data.room[0].size} m square
+    .container
+        .top-section
+            .top-left
+                h3 Equipment
+                for iEquipment in data.equipment
+                    a(href=`/equipment/${iEquipment.e_id}`) #{iEquipment.e_name}
+                    br
+                form(action="/addEquipment", method="post")
+                    label(for='equipmentName') Equipment name:
+                    input(type='text', id='equipmentName', name='equipmentName')
+                    label(for="date") Next maintenance: 
+                    input(type="date", id="date", name="date")
+                    input(type='hidden', name='r_id', value=data.room[0].r_id)
+                    button(type="submit") Add Equipment
+        .bottom-section
+            .bottom-left
+                h3 Classes
+                for booking in data.bookings
+                    b1 Class: #{booking.name} on #{booking.date} from #{booking.start_time} to #{booking.end_time}
+                    form(action="/deleteBooking", method="post")
+                        input(type='hidden', name='b_id', value=booking.b_id)
+                        input(type='hidden', name='c_id', value=booking.c_id)
+                        button(type="submit") Delete Booking    
+                    br

@@ -22,7 +22,7 @@ body
                 form(action="/goals", method="post")
                     label(for='goal') Goal:
                     input(type='text', id='goal', name='goal')
-                    input(type='hidden', name='m_id', value=data.member.m_id)
+                    input(type='hidden', name='m_id', value=data.member[0].m_id)
                     button(type="submit") Submit Goal
             .top-middle 
                 h3 Payments Due
@@ -31,6 +31,8 @@ body
                         b1 Payment of #{payment.cost} due on: #{payment.date}
                         form(action="/pay", method="post")
                             input(type='hidden', name='id', value=payment.p_id)
+                            input(type='hidden', name='m_id', value=data.member[0].m_id)
+                            input(type='hidden', name='cost', value=payment.cost)
                             button(type="submit") Pay Bill
                         br
             .top-right
@@ -56,7 +58,7 @@ body
                     input(type='text', id='endTime', name='endTime')
                     label(for="date") Select a date: 
                     input(type="date", id="date", name="date")
-                    input(type='hidden', name='m_id', value=data.member.m_id)                    
+                    input(type='hidden', name='m_id', value=data.member[0].m_id)                    
                     button(type="submit") Submit Session
         .bottom-section
             .bottom-left
@@ -78,7 +80,7 @@ body
                     input(type='text', id='endTime', name='endTime')
                     label(for="date") Select a date: 
                     input(type="date", id="date", name="date")
-                    input(type='hidden', name='m_id', value=data.member.m_id)
+                    input(type='hidden', name='m_id', value=data.member[0].m_id)
                     button(type="submit") Submit Session
             .bottom-middle 
                 h3 Health
@@ -97,7 +99,7 @@ body
                     input(type='text', id='weight', name='weight')
                     label(for="date") Select a date: 
                     input(type="date", id="date", name="date")
-                    input(type='hidden', name='m_id', value=data.member.m_id)
+                    input(type='hidden', name='m_id', value=data.member[0].m_id)
                     button(type="submit") Submit Health    
             .bottom-right
                 h3 Complaints
@@ -112,5 +114,5 @@ body
                 form(action="/complaint", method="post")
                     label(for='complaint') Complaint:
                     input(type='text', id='complaint', name='complaint')
-                    input(type='hidden', name='m_id', value=data.member.m_id)
+                    input(type='hidden', name='m_id', value=data.member[0].m_id)
                     button(type="submit") Submit Complaint

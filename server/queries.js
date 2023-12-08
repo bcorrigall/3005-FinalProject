@@ -20,8 +20,7 @@ function registerUser(db, type, name, password, callback) {
     }
     let queryText = `INSERT INTO ${type} (name, password) VALUES ('${name}', '${password}') ON CONFLICT DO NOTHING;`;
     if (type === 'members') {
-      queryText += `
-      INSERT INTO Loyalty (m_id) VALUES ((SELECT m_id FROM ${type} WHERE name = '${name}')) ON CONFLICT DO NOTHING;
+      queryText += `INSERT INTO Loyalty (m_id) VALUES ((SELECT m_id FROM ${type} WHERE name = '${name}')) ON CONFLICT DO NOTHING;
       INSERT INTO Payments (m_id) VALUES ((SELECT m_id FROM ${type} WHERE name = '${name}')) ON CONFLICT DO NOTHING;`
     }
     console.log(queryText);
@@ -84,7 +83,23 @@ function getMembersInClass(db, id, callback) {
     if (err) {
       return callback(err, null);
     }
-    const queryText = `SELECT * FROM Classes JOIN MemberClasses ON Classes.c_id = MemberClasses.c_id WHERE Classes.c_id = ${id}`;
+    const queryText = `SELECT * FROM Classes JOIN MemberClasses ON Classes.c_id = MemberClasses.c_id JOIN Members ON MemberClasses.m_id = Members.m_id WHERE Classes.c_id = ${id}`;
+    dbConnection.query(queryText, (err, result) => {
+      release();
+
+      if (err) {
+        return callback(err, null);
+      }
+      callback(null, result.rows);
+    });
+  });
+}
+function joinTablesOn(db, tableName1, tableName2, joinOn, id, selectBy, callback) {
+  db.connect((err, dbConnection, release) => {
+    if (err) {
+      return callback(err, null);
+    }
+    const queryText = `SELECT * FROM ${tableName1} JOIN ${tableName2} ON ${tableName1}.${joinOn} = ${tableName2}.${joinOn} WHERE ${tableName1}.${selectBy} = ${id}`;
     dbConnection.query(queryText, (err, result) => {
       release();
 
@@ -105,7 +120,10 @@ function matchTrainers(db, idType, id) {
       let queryText;
       if (idType === 'm_id') {
         queryText = `SELECT * FROM Sessions JOIN Trainers ON Sessions.t_id = Trainers.t_id WHERE Sessions.m_id = ${id};`;
+      } else if ( idType === 't_id') {
+        queryText = `SELECT * FROM Sessions JOIN Members ON Sessions.m_id = Members.m_id WHERE Sessions.t_id = ${id};`;
       }
+      console.log(queryText);
       dbConnection.query(queryText, (err, result) => {
         release();
           
@@ -173,5 +191,41 @@ function toggleAllWithID(db, tableName, idType, id, toggled, callback) {
     });
   });
 }
+function addLoyalty(db, points, id) {
+  return new Promise((resolve, reject) => {
+    db.connect((err, dbConnection, release) => {
+      if (err) {
+        release();
+        return reject(err);
+      }
+      let queryText = 'UPDATE Loyalty SET points = points + $1 WHERE m_id = $2;';
+      dbConnection.query(queryText, [parseInt(points), parseInt(id)], (err, result) => {
+        release();
+        if (err) {
+          return reject(err);
+        }
+        resolve(result.rows);
+      });
+    });
+  });
+}
+function updateMaintenance(db, e_id, target_date) {
+  return new Promise((resolve, reject) => {
+    db.connect((err, dbConnection, release) => {
+      if (err) {
+        release();
+        return reject(err);
+      }
+      let queryText = 'UPDATE Equipment SET last_fixed = CURRENT_DATE, target_date = $1 WHERE e_id = $2;';
+      dbConnection.query(queryText, [target_date, parseInt(e_id)], (err, result) => {
+        release();
+        if (err) {
+          return reject(err);
+        }
+        resolve(result.rows);
+      });
+    });
+  });
+}
 
-module.exports = { verifyUser, registerUser, getAll, getAllWithID, getMembersInClass, getAllWithIDAsync, matchTrainers, insertWithID, deleteAllWithId, toggleAllWithID };
+module.exports = { verifyUser, registerUser, getAll, getAllWithID, getMembersInClass, joinTablesOn, getAllWithIDAsync, matchTrainers, insertWithID, deleteAllWithId, toggleAllWithID, addLoyalty, updateMaintenance };
