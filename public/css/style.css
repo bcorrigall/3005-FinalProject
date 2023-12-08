@@ -35,20 +35,24 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol {
 }
 
 .top-section{
-  margin-bottom: 5%;
+  margin-top: 1%;
+  margin-bottom: 4%;
 }
 
 .top-left{
+  vertical-align: top; 
   display: inline-block;
   width: 40%;
 }
 
 .top-middle{
+  vertical-align: top; 
   display: inline-block;
   width: 20%;
 }
 
 .top-right{
+  vertical-align: top; 
   display: inline-block;
   width: 40%;
 }
@@ -58,13 +62,21 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol {
 }
 
 .bottom-left{
+  vertical-align: top; 
   display: inline-block;
-  width: 70%;
+  width: 50%;
+}
+
+.bottom-middle{
+  vertical-align: top; 
+  display: inline-block;
+  width: 25%;
 }
 
 .bottom-right{
+  vertical-align: top; 
   display: inline-block;
-  width: 30%;
+  width: 25%;
 }
 
 

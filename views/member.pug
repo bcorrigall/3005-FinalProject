@@ -5,35 +5,112 @@ head
     link(href='/css/style.css' rel='stylesheet')
 body
     include ./partials/header
-    h2 #{data.member.name}
-    h3 Loyalty Points: #{data.loyalty.points}
+    h2 #{data.member[0].name}
+    h3 Loyalty Points: #{data.loyalty[0].points}
     .container
         .top-section
             .top-left
                 h3 Goals
                 for goal in data.goals
                     b1 #{goal.description}
+                    form(action="/delete", method="post")
+                        input(type='hidden', name='table', value='Goals')
+                        input(type='hidden', name='idType', value='g_id')
+                        input(type='hidden', name='id', value=goal.g_id)
+                        button(type="submit") Delete Goal    
                     br
+                form(action="/goals", method="post")
+                    label(for='goal') Goal:
+                    input(type='text', id='goal', name='goal')
+                    input(type='hidden', name='m_id', value=data.member.m_id)
+                    button(type="submit") Submit Goal
             .top-middle 
                 h3 Payments Due
                 for payment in data.payments
-                    b1 Due on: #{payment.date}
-                    br
+                    if (payment.processed === false)
+                        b1 Payment of #{payment.cost} due on: #{payment.date}
+                        form(action="/pay", method="post")
+                            input(type='hidden', name='id', value=payment.p_id)
+                            button(type="submit") Pay Bill
+                        br
             .top-right
                 h3 Solitary Workouts
                 for exercise in data.exercises
-                    b1 Body group: #{exercise.body_group}                    
+                    b1 Body group: #{exercise.body_group}
+                    form(action="/delete", method="post")
+                        input(type='hidden', name='table', value='Exercises')
+                        input(type='hidden', name='idType', value='e_id')
+                        input(type='hidden', name='id', value=exercise.e_id)
+                        button(type="submit") Delete Exercise                        
                     br
-                    b1 #{exercise.description} | From #{exercise.description} to #{exercise.description} on #{exercise.date}
-                    br 
+                    b1 #{exercise.description} | From #{exercise.start_time} to #{exercise.end_time} on #{exercise.date}
+                    br
+                form(action="/workouts", method="post")
+                    label(for='bodyGroup') Body group:
+                    input(type='text', id='bodyGroup', name='bodyGroup')
+                    label(for='description') Description:
+                    input(type='text', id='description', name='description')
+                    label(for='startTime') Start time:
+                    input(type='text', id='startTime', name='startTime')
+                    label(for='endTime') End time:
+                    input(type='text', id='endTime', name='endTime')
+                    label(for="date") Select a date: 
+                    input(type="date", id="date", name="date")
+                    input(type='hidden', name='m_id', value=data.member.m_id)                    
+                    button(type="submit") Submit Session
         .bottom-section
             .bottom-left
                 h3 Training Sessions
                 for session in data.sessions
-                    b1 Session with GET NAME from #{session.start_time} to #{session.end_time} on #{session.date}
+                    b1 Session with #{session.name} from #{session.start_time} to #{session.end_time} on #{session.date}
+                    form(action="/delete", method="post")
+                        input(type='hidden', name='table', value='Sessions')
+                        input(type='hidden', name='idType', value='s_id')
+                        input(type='hidden', name='id', value=session.s_id)
+                        button(type="submit") Delete Record    
                     br
+                form(action="/session", method="post")
+                    label(for='trainerName') Trainer name:
+                    input(type='text', id='trainerName', name='trainerName')
+                    label(for='startTime') Start time:
+                    input(type='text', id='startTime', name='startTime')
+                    label(for='endTime') End time:
+                    input(type='text', id='endTime', name='endTime')
+                    label(for="date") Select a date: 
+                    input(type="date", id="date", name="date")
+                    input(type='hidden', name='m_id', value=data.member.m_id)
+                    button(type="submit") Submit Session
+            .bottom-middle 
+                h3 Health
+                for health in data.health
+                    b1 Was #{health.height}cm tall at #{health.weight}lb on #{health.date}
+                    form(action="/delete", method="post")
+                        input(type='hidden', name='table', value='Health')
+                        input(type='hidden', name='idType', value='h_id')
+                        input(type='hidden', name='id', value=health.h_id)
+                        button(type="submit") Delete Record    
+                    br
+                form(action="/health", method="post")
+                    label(for='height') Height:
+                    input(type='text', id='height', name='height')
+                    label(for='weight') Weight:
+                    input(type='text', id='weight', name='weight')
+                    label(for="date") Select a date: 
+                    input(type="date", id="date", name="date")
+                    input(type='hidden', name='m_id', value=data.member.m_id)
+                    button(type="submit") Submit Health    
             .bottom-right
                 h3 Complaints
                 for complaint in data.complaints
                     b1 #{complaint.description}
+                    form(action="/delete", method="post")
+                        input(type='hidden', name='table', value='Complaints')
+                        input(type='hidden', name='idType', value='c_id')
+                        input(type='hidden', name='id', value=complaint.c_id)
+                        button(type="submit") Delete Complaint    
                     br
+                form(action="/complaint", method="post")
+                    label(for='complaint') Complaint:
+                    input(type='text', id='complaint', name='complaint')
+                    input(type='hidden', name='m_id', value=data.member.m_id)
+                    button(type="submit") Submit Complaint
