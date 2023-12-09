@@ -6,6 +6,7 @@ head
 body
     include ./partials/header
     h4 Classes
-    for iClass in result
-        a(href=`/classes/${iClass.c_id}`) #{iClass.name}
-        br
+    .list
+        for iClass in result
+            a(href=`/classes/${iClass.c_id}`) #{iClass.name}
+            br

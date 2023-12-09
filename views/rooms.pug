@@ -6,6 +6,7 @@ head
 body
     include ./partials/header
     h4 Rooms
-    for room in result
-        a(href=`/rooms/${room.r_id}`) #{room.name}
-        br
+    .list
+        for room in result
+            a(href=`/rooms/${room.r_id}`) #{room.name}
+            br

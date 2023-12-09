@@ -5,7 +5,8 @@ head
     link(href='/css/style.css' rel='stylesheet')
 body
     include ./partials/header
-    h4 Trainers
-    for trainer in result
-        a(href=`/trainers/${trainer.t_id}`) #{trainer.name}
-        br
+    h4 
+    .list
+        for trainer in result
+            a(href=`/trainers/${trainer.t_id}`) #{trainer.name}
+            br
