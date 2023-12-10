@@ -1,0 +1,13 @@
+{
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "[javascript]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+    },
+    "prettier.tabWidth": 4,
+    "prettier.useTabs": false,
+    "prettier.arrowParens": "avoid",
+    "prettier.printWidth": 150 // Adjust this to your preferred line length
+
+}

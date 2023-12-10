@@ -6,6 +6,8 @@ head
 body
     include ./partials/header
     h4 Equipment
-    for equipment in result
-        a(href=`/equipment/${equipment.e_id}`) #{equipment.e_name}
-        br
+        for equipment in result
+            li
+                a(href=`/equipment/${equipment.e_id}`) #{equipment.e_name} 
+                |  in 
+                span.room-name #{equipment.room_name}
