@@ -17,7 +17,6 @@
 2. Navigate to the project directory.
 3. Run `npm install` to install all dependencies listed in `package.json` and `package-lock.json`.
 4. Configure your database connection in `server/dbConnect.js`. Change the `user` and `password` fields to your database username and password respectively.
-5. Start the server with `npm start` or `node [your server file name]`.
 
 Note: `npm install` will automatically install all the dependencies required for the project, as specified in the `package.json` and `package-lock.json` files.
 
