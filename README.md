@@ -1,4 +1,4 @@
-# The Dojo
+# Slavchev Dojo
 
 ## Prerequisites
 
