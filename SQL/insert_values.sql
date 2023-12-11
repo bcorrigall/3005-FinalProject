@@ -71,6 +71,7 @@ INSERT INTO Loyalty (m_id, points) VALUES
     (1, 50),
     (2, 30),
     (3, 75);
+    (4, 0);
 
 -- Rooms table
 INSERT INTO Rooms (size, name) VALUES
