@@ -1,6 +1,6 @@
 -- Members table
 INSERT INTO Members (name, password) VALUES
-    ('John Smith', 0000),
+    ('John Smith', '0000'),
     ('Jane Smith', '1111'),
     ('Bob Johnson', '2222'),
 	('member', 'member');
