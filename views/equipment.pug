@@ -6,7 +6,6 @@ head
 body
     include ./partials/header
     h4 Equipment
-    .list
-        for equipment in result
-            a(href=`/equipment/${equipment.e_id}`) #{equipment.e_name}
-            br
+    for equipment in result
+        a(href=`/equipment/${equipment.e_id}`) #{equipment.e_name}
+        br
